@@ -1,11 +1,10 @@
 package com.wms.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wms.entity.Goodstype;
-import com.wms.entity.Storage;
-import com.wms.mapper.GoodstypeMapper;
-import com.wms.mapper.StorageMapper;
+import com.wms.mapper.mysql.GoodstypeMapper;
 import com.wms.service.GoodstypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

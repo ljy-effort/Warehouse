@@ -1,6 +1,7 @@
 package com.wms.controller;
 
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -74,7 +75,7 @@ public class RecordController {
     }
     //新增
     //新增
-    @PostMapping("/save")
+    @PostMapping("/save")//
     public Result save(@RequestBody Record record) {
         Goods goods = goodsService.getById(record.getGoods());
         int n = record.getCount();
