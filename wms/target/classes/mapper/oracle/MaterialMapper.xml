@@ -23,4 +23,12 @@
     WHERE MSB.ORGANIZATION_ID = 85
 </select>
 
+    <select id="searchMaterials" resultType="map" parameterType="com.wms.entity.MaterialSearchParam">
+        SELECT MSB.SEGMENT1 AS "materialCode", MSB.DESCRIPTION AS "materialName"
+        FROM MTL_SYSTEM_ITEMS_B MSB
+        WHERE MSB.ORGANIZATION_ID = 85
+          AND (MSB.SEGMENT1 LIKE '%' || #{params.searchCode} || '%'
+            AND MSB.DESCRIPTION LIKE '%' || #{params.searchName} || '%')
+    </select>
+
 </mapper>

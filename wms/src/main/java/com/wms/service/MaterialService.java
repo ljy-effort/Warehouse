@@ -9,4 +9,5 @@ import java.util.Map;
 
 public interface MaterialService extends IService<Material> {
     List<Map<String, Object>> listMaterials();
+    List<Map<String, Object>> searchMaterials(String searchCode, String searchName);
 }
