@@ -8,16 +8,19 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.wms.entity.Goods">
         <id column="id" property="id" />
+        <result column="goodscode" property="goodscode" />
         <result column="name" property="name" />
         <result column="storage" property="storage" />
         <result column="goodsType" property="goodstype" />
         <result column="count" property="count" />
+<!--        <result column="amount" property="amount"amount, />-->
         <result column="remark" property="remark" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
+
     <sql id="Base_Column_List">
-        id, name, storage, goodsType, count, remark
+        id, goodscode,name, storage, goodsType, count,  remark
     </sql>
 
 </mapper>

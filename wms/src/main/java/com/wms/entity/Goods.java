@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,6 +30,9 @@ public class Goods implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    @ApiModelProperty(value = "物料编码")
+    private String goodscode;
+
     @ApiModelProperty(value = "货名")
     private String name;
 
@@ -40,6 +45,10 @@ public class Goods implements Serializable {
 
     @ApiModelProperty(value = "数量")
     private Integer count;
+
+//    //新增一个金额字段
+//    @ApiModelProperty(value = "金额")
+//    private BigDecimal amount;
 
     @ApiModelProperty(value = "备注")
     private String remark;

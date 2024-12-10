@@ -11,6 +11,7 @@ import com.wms.common.Result;
 import com.wms.entity.Goods;
 import com.wms.entity.Goods;
 import com.wms.service.GoodsService;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,8 @@ public class GoodsController {
         String name = (String)param.get("name");
         String goodstype = (String)param.get("goodstype");
         String storage = (String)param.get("storage");
+        //添加物料编码查询参数
+        String goodscode =(String) param.get("goodscode");
 
         Page<Goods> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -66,6 +69,10 @@ public class GoodsController {
         }
         if(StringUtils.isNotBlank(storage) && !"null".equals(storage)){
             lambdaQueryWrapper.eq(Goods::getStorage,storage);
+        }
+        //添加物料编码查询条件
+        if(StringUtils.isNotBlank(goodscode) && !"null".equals(goodscode)){
+            lambdaQueryWrapper.eq(Goods::getGoodscode,goodscode);
         }
 
         IPage result = goodsService.pageCC(page,lambdaQueryWrapper);

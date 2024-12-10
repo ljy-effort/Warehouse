@@ -3,6 +3,8 @@ package com.wms.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
@@ -45,6 +47,10 @@ public class Record implements Serializable {
     @ApiModelProperty(value = "数量")
     private Integer count;
 
+    //新增一个金额字段
+    @ApiModelProperty(value = "金额")
+    private BigDecimal amount;
+
     @ApiModelProperty(value = "操作时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     @TableField(fill = FieldFill.INSERT)
@@ -52,6 +58,11 @@ public class Record implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "物料编码")
+    private String goodscode; // 物料编码字段
+
+
 
     @TableField(exist = false)
     private String action;

@@ -3,7 +3,7 @@
 <mapper namespace="com.wms.mapper.mysql.RecordMapper">
 
     <select id="pageCC" resultType="com.wms.entity.RecordRes">
-         select a.*,b.name goodsname,c.name storagename,d.name goodstypename,
+         select a.*,b.goodscode as goodscode,b.name goodsname,c.name storagename,d.name goodstypename,
         (select u.name from user u where u.id=a.userid)username,
         (select u.name from user u where u.id=a.admin_id)adminname
          from record a ,goods b,storage c,goodsType d
@@ -15,16 +15,18 @@
     <resultMap id="BaseResultMap" type="com.wms.entity.Record">
         <id column="id" property="id" />
         <result column="goods" property="goods" />
+        <result column="goodscode" property="goodscode"/>
         <result column="userId" property="userid" />
         <result column="admin_id" property="adminId" />
         <result column="count" property="count" />
+        <result column="amount" property="amount" />
         <result column="createtime" property="createtime" />
         <result column="remark" property="remark" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, goods, userId, admin_id, count, createtime, remark
+        id, goods, goodscode, userId, admin_id, count,amount, createtime, remark
     </sql>
 
 </mapper>
