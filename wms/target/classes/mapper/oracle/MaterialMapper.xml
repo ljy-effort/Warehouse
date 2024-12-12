@@ -17,6 +17,12 @@
 <!--</mapper>-->
 <mapper namespace="com.wms.mapper.oracle.MaterialMapper">
 
+    <select id="pageCC" resultType="map">
+        SELECT MSB.SEGMENT1 AS "materialCode", MSB.DESCRIPTION AS "materialName"
+        FROM MTL_SYSTEM_ITEMS_B MSB
+        WHERE MSB.ORGANIZATION_ID = 85
+    </select>
+
 <select id="listMaterials" resultType="map">
     SELECT MSB.SEGMENT1 AS "materialCode", MSB.DESCRIPTION AS "materialName"
     FROM MTL_SYSTEM_ITEMS_B MSB

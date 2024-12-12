@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.wms.entity.Record;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface RecordMapper extends BaseMapper<Record> {
     IPage pageCC(IPage<Record> page, @Param(Constants.WRAPPER) Wrapper wrapper);
+
+    //保存出入库记录
+    int saveRecord(Record record);
 }

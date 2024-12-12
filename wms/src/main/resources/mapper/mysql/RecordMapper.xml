@@ -28,5 +28,10 @@
     <sql id="Base_Column_List">
         id, goods, goodscode, userId, admin_id, count,amount, createtime, remark
     </sql>
+    <!--    保存记录-->
+    <insert id="saveRecord" parameterType="com.wms.entity.Record">
+        INSERT INTO record (goods, user_id, admin_id, count, amount, createtime, remark)
+        VALUES (#{goods}, #{userid}, #{adminId}, #{count}, #{amount}, #{createtime}, #{remark})
+    </insert>
 
 </mapper>

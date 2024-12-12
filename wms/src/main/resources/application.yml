@@ -34,7 +34,10 @@ mybatis-plus:
   type-aliases-package: com.wms.entity
   configuration:
     map-underscore-to-camel-case: true
+    jdbc-type-for-null: null
 
 Logging:
   level:
+    org.apache.ibatis: DEBUG
+    com.baomidou.mybatisplus: DEBUG
     com.wms: debug

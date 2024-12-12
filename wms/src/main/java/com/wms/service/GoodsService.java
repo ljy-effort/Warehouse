@@ -6,6 +6,8 @@ import com.wms.entity.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wms.entity.Storage;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
  *  服务类
@@ -16,4 +18,9 @@ import com.wms.entity.Storage;
  */
 public interface GoodsService extends IService<Goods> {
     IPage pageCC(IPage<Goods> page, Wrapper wrapper);
+    Goods findGoodsByCode(String goodsCode);
+
+    boolean addInventory(String goodsCode, int quantity, BigDecimal amount);
+
+    boolean subtractInventory(String goodsCode, int quantity, BigDecimal amount);
 }

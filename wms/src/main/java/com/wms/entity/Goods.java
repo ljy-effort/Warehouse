@@ -40,7 +40,7 @@ public class Goods implements Serializable {
     private Integer storage;
 
     @ApiModelProperty(value = "分类")
-    @TableField("goodsType")
+    @TableField("goodstype")
     private Integer goodstype;
 
     @ApiModelProperty(value = "数量")

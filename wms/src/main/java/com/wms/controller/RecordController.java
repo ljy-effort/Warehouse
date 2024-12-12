@@ -11,6 +11,7 @@ import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.Goods;
 import com.wms.entity.Record;
+import com.wms.entity.RecordDTO;
 import com.wms.service.GoodsService;
 import com.wms.service.RecordService;
 import lombok.val;
@@ -112,5 +113,23 @@ public class RecordController {
             return recordService.save(record) ? Result.suc() : Result.fail();
         }
 
+    }
+    //根据物料编码保存
+    @PostMapping("/saveRecord")
+    public Result save(@RequestBody RecordDTO recordDTO) {
+        try {
+            Goods goods = goodsService.findGoodsByCode(recordDTO.getGoodsCode());
+            if (goods == null) {
+                return Result.fail("商品不存在");
+            }
+            if ("in".equals(recordDTO.getType())) {
+                goodsService.addInventory(recordDTO.getGoodsCode(), recordDTO.getQuantity(), recordDTO.getAmount());
+            } else if ("out".equals(recordDTO.getType())) {
+                goodsService.subtractInventory(recordDTO.getGoodsCode(), recordDTO.getQuantity(), recordDTO.getAmount());
+            }
+            return Result.suc();
+        } catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
     }
 }

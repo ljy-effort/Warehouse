@@ -2,25 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wms.mapper.mysql.GoodsMapper">
 
+
     <select id="pageCC" resultType="com.wms.entity.Goods">
         select * from goods ${ew.customSqlSegment}
     </select>
+
+
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.wms.entity.Goods">
         <id column="id" property="id" />
         <result column="goodscode" property="goodscode" />
         <result column="name" property="name" />
         <result column="storage" property="storage" />
-        <result column="goodsType" property="goodstype" />
+        <result column="goodstype" property="goodstype" />
         <result column="count" property="count" />
 <!--        <result column="amount" property="amount"amount, />-->
         <result column="remark" property="remark" />
     </resultMap>
 
+    <!-- 同步数据 -->
+    <insert id="insertBatchSomeColumn" parameterType="list">
+        INSERT INTO goods (goodscode, name, storage, goodsType, count, remark)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.goodscode,jdbcType=VARCHAR},
+            #{item.name,jdbcType=VARCHAR},
+            #{item.storage,jdbcType=INTEGER},
+            #{item.goodstype,jdbcType=INTEGER},
+            #{item.count,jdbcType=INTEGER},
+            #{item.remark,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+<!--    //通过物料编码查询出去去全部的数据-->
+    <select id="findGoodsByCode" resultType="com.wms.entity.Goods">
+        SELECT * FROM goods WHERE goodscode = #{goodsCode}
+    </select>
+
     <!-- 通用查询结果列 -->
 
     <sql id="Base_Column_List">
-        id, goodscode,name, storage, goodsType, count,  remark
+        id, goodscode,name, storage, goodstype, count,  remark
     </sql>
 
 </mapper>
