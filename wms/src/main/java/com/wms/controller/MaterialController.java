@@ -24,7 +24,7 @@ public class MaterialController {
     @Autowired
     private MaterialService materialService;
 
-    @GetMapping("/search")
+    @GetMapping("/search")//查询物料的信息
     public IPage<Map<String, Object>> searchMaterials(@RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
                                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                       MaterialSearchParam params) {
@@ -32,12 +32,12 @@ public class MaterialController {
         return materialService.searchMaterials(page, params);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list")//清单
     public List<Map<String, Object>> listMaterials() {
         return materialService.listMaterials();
     }
 
-    @GetMapping("/listPage")
+    @GetMapping("/listPage")//查询分页
     public IPage<Map<String, Object>> listMaterials(@RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
                                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         Page<Map<String, Object>> page = new Page<>(pageNum, pageSize);

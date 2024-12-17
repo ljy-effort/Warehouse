@@ -19,5 +19,10 @@ public class RecordDTO {
     @ApiModelProperty(value = "出入库类型")
     private String type; // "in" 或 "out"
 
+    @ApiModelProperty(value = "操作人id")
+    private Integer adminId; // 添加操作人ID属性
+
+    @ApiModelProperty(value = "申请人id")
+    private Integer userid; // 添加申请人ID属性
     // getter和setter方法
 }

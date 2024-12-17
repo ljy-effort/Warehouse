@@ -43,12 +43,10 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     @Override
     public boolean save(Record record) {
         // 保存记录前进行数据校验
-        if (record.getGoods() == null || record.getCount() == null || record.getAmount() == null) {
+        if (record.getGoods() == null || record.getCount() == null ) {
             throw new RuntimeException("保存记录失败，商品ID、数量、金额不能为空");
         }
-        // 直接调用ServiceImpl的save方法
+        // 直接调用ServiceImpl的save方法|| record.getAmount() == null
         return baseMapper.insert(record) > 0;
     }
-
-
 }

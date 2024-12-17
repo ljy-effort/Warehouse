@@ -16,7 +16,7 @@
         <id column="id" property="id" />
         <result column="goods" property="goods" />
         <result column="goodscode" property="goodscode"/>
-        <result column="userId" property="userid" />
+        <result column="userid" property="userid" />
         <result column="admin_id" property="adminId" />
         <result column="count" property="count" />
         <result column="amount" property="amount" />
@@ -26,11 +26,11 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, goods, goodscode, userId, admin_id, count,amount, createtime, remark
+        id, goods, goodscode, userid, admin_id, count,amount, createtime, remark
     </sql>
     <!--    保存记录-->
     <insert id="saveRecord" parameterType="com.wms.entity.Record">
-        INSERT INTO record (goods, user_id, admin_id, count, amount, createtime, remark)
+        INSERT INTO record (goods, userid, admin_id, count, amount, createtime, remark)
         VALUES (#{goods}, #{userid}, #{adminId}, #{count}, #{amount}, #{createtime}, #{remark})
     </insert>
 
