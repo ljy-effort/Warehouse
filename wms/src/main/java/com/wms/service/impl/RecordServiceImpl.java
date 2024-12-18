@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,6 +41,12 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
                 .le("createtime", endDate);
         return list(queryWrapper);
     }
+
+    @Override
+    public List<Record> findRecordsByGoodsAndDate(Integer goodsId, String startTime, String endTime) {
+        return Collections.emptyList();
+    }//待开发
+
     @Override
     public boolean save(Record record) {
         // 保存记录前进行数据校验

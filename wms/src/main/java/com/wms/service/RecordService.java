@@ -24,4 +24,6 @@ public interface RecordService extends IService<Record> {
     boolean save(Record record);
 
     List<Record> findRecordsByGoodsIdAndDateRange(Integer goodsId, LocalDate startDate, LocalDate endDate);
+
+    List<Record> findRecordsByGoodsAndDate(Integer goodsId, String startTime, String endTime);
 }
