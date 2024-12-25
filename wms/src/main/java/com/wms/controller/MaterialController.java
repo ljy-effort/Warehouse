@@ -44,4 +44,9 @@ public class MaterialController {
         QueryWrapper<?> queryWrapper = new QueryWrapper<>();
         return materialService.pageCC(page, queryWrapper);
     }
+
+//    @RequestParam("selectedMaterials") List<String> selectedMaterials) {
+//        Page<Map<String, Object>> page = new Page<>(pageNum, pageSize);
+//        return materialService.listMaterials(page, selectedMaterials);
+//    }
 }

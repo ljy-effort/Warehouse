@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wms.entity.Goods;
+import com.wms.entity.MaterialSearchParam;
 import com.wms.entity.Record;
 import com.wms.mapper.mysql.GoodsMapper;
 import com.wms.service.GoodsService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * <p>
@@ -76,5 +78,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         record.setAction("out"); // 出库操作
         recordService.save(record);
         return true;
+    }
+
+    @Override
+    public IPage<Map<String, Object>> searchGoods(IPage<?> page, MaterialSearchParam params) {
+        return goodsMapper.searchGoods(page, params);
     }
 }

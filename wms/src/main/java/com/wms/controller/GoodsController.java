@@ -10,12 +10,14 @@ import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.Goods;
 import com.wms.entity.Goods;
+import com.wms.entity.MaterialSearchParam;
 import com.wms.service.GoodsService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -45,6 +47,14 @@ public class GoodsController {
     @GetMapping("/del")
     public Result del(@RequestParam String id){
         return goodsService.removeById(id)?Result.suc():Result.fail();
+    }
+
+    @GetMapping("/search")//查询物料的信息
+    public IPage<Map<String, Object>> searchGoods(@RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
+                                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                      MaterialSearchParam params) {
+        Page<Map<String, Object>> page = new Page<>(pageNum, pageSize);
+        return goodsService.searchGoods(page, params);
     }
 
     @PostMapping("/listPage")

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.wms.entity.Goods;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wms.entity.MaterialSearchParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -30,4 +31,6 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     // 根据物料编码查询商品
 
     Goods findGoodsByCode(@Param("goodsCode") String goodsCode);
+
+    IPage<Map<String, Object>> searchGoods(IPage<?> page, @Param("params") MaterialSearchParam params);
 }

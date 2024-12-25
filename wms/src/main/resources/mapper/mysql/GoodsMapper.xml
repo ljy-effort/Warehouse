@@ -44,4 +44,10 @@
         id, goodscode,name, storage, goodstype, count,  remark
     </sql>
 
+    <select id="searchGoods" resultType="map">
+        SELECT *
+        FROM goods
+        WHERE (goodscode LIKE '%' || #{params.searchCode} || '%'
+          AND name LIKE '%' || #{params.searchName} || '%')
+    </select>
 </mapper>
