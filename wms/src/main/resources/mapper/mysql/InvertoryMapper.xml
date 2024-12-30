@@ -3,6 +3,7 @@
 <mapper namespace="com.wms.mapper.mysql.InventoryMapper">
 
     <select id="findRecordsByGoodsAndDate" resultType="map">
+
         SELECT
             id, goods, count, amount, createtime
         FROM
@@ -10,5 +11,60 @@
         WHERE
             goods = #{goodsId} AND createtime BETWEEN #{startTime} AND #{endTime}
     </select>
+    <!-- 获取所有物料信息 -->
+    <select id="getAllMaterials" resultType="Goods">
+        SELECT *
+        FROM goods
+    </select>
+    <!-- 获取单个物料信息 -->
+    <select id="getGoodsById" resultType="Material">
+        SELECT id, goodscode, name, count
+        FROM goods
+        WHERE id = #{goodsId}
+    </select>
 
+    <!-- 获取单个物料信息 -->
+    <select id="getGoodsInfo" resultType="Map">
+        SELECT goodscode, name, count
+        FROM goods
+        WHERE id = #{goodsId}
+    </select>
+
+    <!-- 获取所有物料的出入库记录 -->
+    <select id="findRecordsForAllMaterials" resultType="map">
+        SELECT goods, count , amount ,createtime
+        FROM record
+        WHERE createtime BETWEEN #{startTime} AND #{endTime}
+
+    </select>
+
+    <select id="findRecordsWithGoodsInfo" resultType="map">
+        SELECT
+            r.goods AS goodsId,
+            r.count AS totalCount,
+            r.amount AS totalAmount,
+            g.goodscode AS goodsCode,
+            g.name AS goodsName,
+            g.count AS stockCount
+        FROM
+            record r
+                JOIN
+            goods g ON r.goods = g.id
+        WHERE
+            r.createtime BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="findRecordsByGoodsAndDateWithDetails" resultType="com.wms.entity.RecordDetail">
+        SELECT
+            a.id, a.goods, b.goodscode, b.name as goodsname,
+            (SELECT u.name FROM user u WHERE u.id=a.admin_id) as username,
+            a.count, a.amount, a.createtime
+        FROM
+            record a
+                JOIN goods b ON a.goods = b.id
+        WHERE
+            a.createtime BETWEEN #{startTime} AND #{endTime}
+          AND a.goods = #{goodsId}
+    </select>
 </mapper>
+
