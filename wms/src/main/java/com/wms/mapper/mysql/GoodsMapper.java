@@ -33,4 +33,6 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     Goods findGoodsByCode(@Param("goodsCode") String goodsCode);
 
     IPage<Map<String, Object>> searchGoods(IPage<?> page, @Param("params") MaterialSearchParam params);
+
+    boolean updateGoods(Goods goods);
 }

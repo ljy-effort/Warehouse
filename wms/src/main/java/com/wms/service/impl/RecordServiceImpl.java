@@ -4,6 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.wms.entity.Goods;
 import com.wms.entity.Record;
 import com.wms.mapper.mysql.RecordMapper;
 import com.wms.service.RecordService;
@@ -56,4 +57,5 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         // 直接调用ServiceImpl的save方法|| record.getAmount() == null
         return baseMapper.insert(record) > 0;
     }
+
 }

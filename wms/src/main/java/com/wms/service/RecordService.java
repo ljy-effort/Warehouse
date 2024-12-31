@@ -26,4 +26,6 @@ public interface RecordService extends IService<Record> {
     List<Record> findRecordsByGoodsIdAndDateRange(Integer goodsId, LocalDate startDate, LocalDate endDate);
 
     List<Record> findRecordsByGoodsAndDate(Integer goodsId, String startTime, String endTime);
+
+
 }

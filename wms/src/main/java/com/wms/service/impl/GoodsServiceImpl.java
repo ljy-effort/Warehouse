@@ -84,4 +84,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     public IPage<Map<String, Object>> searchGoods(IPage<?> page, MaterialSearchParam params) {
         return goodsMapper.searchGoods(page, params);
     }
+
+    @Override
+    public boolean updateGoods(Goods goods) {
+        return goodsMapper.updateGoods(goods) ;
+    }
 }

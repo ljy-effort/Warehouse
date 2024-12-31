@@ -142,13 +142,17 @@ public class RecordController {
 //            }
             // 出库操作
              if ("out".equals(recordDTO.getType())) {
-                // 将数量转换为负数
-                quantity = -quantity;
-                // 验证库存是否足够
-                if ((goods.getCount() + quantity) < 0) {
-                    return Result.fail("仓库物品剩余" + goods.getCount() + "件，不足以完成出库");
-                }
-            }
+                 // 将数量转换为负数
+                 quantity = -quantity;
+                 // 验证库存是否足够
+                 if ((goods.getCount() + quantity) < 0) {
+                     return Result.fail("仓库物品 '" + goods.getName() + "' 剩余 " + goods.getCount() + "件，不足以完成出库");
+                 }
+             }
+             //更新库存数量
+            goods.setCount(goods.getCount() + quantity);//更新库存数量
+            goodsService.updateGoods(goods);
+
             // 创建Record对象并保存
             Record record = new Record();
             record.setGoods(goods.getId());

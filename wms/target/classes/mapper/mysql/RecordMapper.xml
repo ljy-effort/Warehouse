@@ -34,4 +34,5 @@
         VALUES (#{goods}, #{userid}, #{adminId}, #{count}, #{amount}, #{createtime}, #{remark})
     </insert>
 
+
 </mapper>

@@ -29,4 +29,6 @@ public interface GoodsService extends IService<Goods> {
     boolean subtractInventory(String goodsCode, int quantity, BigDecimal amount);
 
     IPage<Map<String, Object>> searchGoods(IPage<?> page,@Param("params") MaterialSearchParam params);
+
+    boolean updateGoods(Goods goods);
 }

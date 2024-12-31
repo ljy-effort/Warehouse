@@ -46,10 +46,6 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "数量")
     private Integer count;
 
-//    //新增一个金额字段
-//    @ApiModelProperty(value = "金额")
-//    private BigDecimal amount;
-
     @ApiModelProperty(value = "备注")
     private String remark;
 
