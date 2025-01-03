@@ -1,5 +1,7 @@
 package com.wms.controller;
 
+
+import com.wms.common.Result;
 import com.wms.service.MaterialSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,12 @@ public class MaterialSyncController {
     @PostMapping("/trigger-sync")
     public ResponseEntity<?> triggerSync() {
         try {
-            materialSyncService.syncMaterials();
-            return ResponseEntity.ok("同步操作已触发");
+            int updatedCount = materialSyncService.syncMaterials();
+            // 使用Result类的静态方法来创建成功响应
+            return ResponseEntity.ok(Result.suc(updatedCount, (long) updatedCount));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("同步操作失败: " + e.getMessage());
+            // 使用Result类的静态方法来创建失败响应
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.fail("同步操作失败: " + e.getMessage()));
         }
     }
 }

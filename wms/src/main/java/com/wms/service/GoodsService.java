@@ -31,4 +31,6 @@ public interface GoodsService extends IService<Goods> {
     IPage<Map<String, Object>> searchGoods(IPage<?> page,@Param("params") MaterialSearchParam params);
 
     boolean updateGoods(Goods goods);
+
+    boolean updateGoodsByCode(Goods goods);
 }

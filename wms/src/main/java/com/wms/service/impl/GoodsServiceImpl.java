@@ -89,4 +89,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     public boolean updateGoods(Goods goods) {
         return goodsMapper.updateGoods(goods) ;
     }
+
+    @Override
+    public boolean updateGoodsByCode(Goods goods) {
+        return goodsMapper.updateGoodsByCode(goods);
+    }
 }

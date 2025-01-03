@@ -28,11 +28,13 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     //t添加批量保存方法
     @DS("mysql")
     int insertBatchSomeColumn(List <Goods> list);
-    // 根据物料编码查询商品
 
+    // 根据物料编码查询商品
     Goods findGoodsByCode(@Param("goodsCode") String goodsCode);
 
     IPage<Map<String, Object>> searchGoods(IPage<?> page, @Param("params") MaterialSearchParam params);
 
     boolean updateGoods(Goods goods);
+
+    boolean updateGoodsByCode(Goods goods);
 }

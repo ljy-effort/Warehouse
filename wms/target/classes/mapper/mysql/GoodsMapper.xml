@@ -16,7 +16,6 @@
         <result column="storage" property="storage" />
         <result column="goodstype" property="goodstype" />
         <result column="count" property="count" />
-<!--        <result column="amount" property="amount"amount, />-->
         <result column="remark" property="remark" />
     </resultMap>
 
@@ -24,7 +23,7 @@
     <insert id="insertBatchSomeColumn" parameterType="list">
         INSERT INTO goods (goodscode, name, storage, goodsType, count, remark)
         VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
+        <foreach collection="list" item="item"  separator=",">
             (#{item.goodscode,jdbcType=VARCHAR},
             #{item.name,jdbcType=VARCHAR},
             #{item.storage,jdbcType=INTEGER},
@@ -38,12 +37,19 @@
         SELECT * FROM goods WHERE goodscode = #{goodsCode}
     </select>
 
+
     <update id="updateGoods" parameterType="com.wms.entity.Goods">
         UPDATE goods
         SET count = #{count}
         WHERE id = #{id}
     </update>
 
+    <!-- 根据goodscode更新名称 -->
+    <update id="updateGoodsByCode" parameterType="com.wms.entity.Goods">
+        UPDATE goods
+        SET name = #{name}
+        WHERE goodscode = #{goodscode}
+    </update>
     <!-- 通用查询结果列 -->
 
     <sql id="Base_Column_List">

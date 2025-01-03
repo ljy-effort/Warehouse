@@ -8,5 +8,5 @@ public interface MaterialSyncService {
     /**
      * 同步物料信息从Oracle到MySQL数据库。
      */
-    void syncMaterials();
+    int syncMaterials();
 }
