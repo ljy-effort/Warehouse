@@ -12,7 +12,7 @@ public class ExcelExportUtil {
 
     public static void exportExcel(HttpServletResponse response, String fileName, List<Map<String, Object>> data, String[] headers, String[] columns) throws IOException {
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
+        Sheet sheet = workbook.createSheet(fileName); // 使用传入的表名创建Sheet
 
         // 创建表头
         Row headerRow = sheet.createRow(0);

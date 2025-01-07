@@ -1,6 +1,7 @@
 package com.wms.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RecordDetail {
@@ -11,7 +12,7 @@ public class RecordDetail {
     private String username;
     private Integer count;
     private BigDecimal amount;
-    private Date createtime;
+    private LocalDateTime createtime;
 
     // Getters and Setters
 
@@ -71,15 +72,15 @@ public class RecordDetail {
         this.amount = amount;
     }
 
-    public Date getCreatetime() {
+    public LocalDateTime getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(LocalDateTime createtime) {
         this.createtime = createtime;
     }
 
-    public RecordDetail(Integer id, Integer goods, String goodscode, String goodsname, String username, Integer count, BigDecimal amount, Date createtime) {
+    public RecordDetail(Integer id, Integer goods, String goodscode, String goodsname, String username, Integer count, BigDecimal amount, LocalDateTime createtime) {
         this.id = id;
         this.goods = goods;
         this.goodscode = goodscode;
