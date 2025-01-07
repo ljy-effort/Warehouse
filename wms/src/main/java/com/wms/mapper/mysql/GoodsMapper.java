@@ -37,4 +37,6 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     boolean updateGoods(Goods goods);
 
     boolean updateGoodsByCode(Goods goods);
+
+    List<Map<String, Object>> getAllGoodsForExport();
 }

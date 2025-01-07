@@ -62,4 +62,20 @@
         WHERE (goodscode LIKE '%' || #{params.searchCode} || '%'
           AND name LIKE '%' || #{params.searchName} || '%')
     </select>
+    <!-- 示例：获取所有商品信息用于导出 -->
+    <select id="getAllGoodsForExport" resultType="map">
+        SELECT
+            g.goodscode,
+            g.name,
+            s.name AS storageName,
+            t.name AS typeName,
+            g.count,
+            g.remark
+        FROM
+            goods g
+                LEFT JOIN
+            storage s ON g.storage = s.id
+                LEFT JOIN
+            goodstype t ON g.goodstype = t.id
+    </select>
 </mapper>

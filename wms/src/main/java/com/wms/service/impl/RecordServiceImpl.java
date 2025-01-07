@@ -1,11 +1,10 @@
 package com.wms.service.impl;
 
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.wms.entity.Goods;
 import com.wms.entity.Record;
+import com.wms.entity.RecordExc;
 import com.wms.mapper.mysql.RecordMapper;
 import com.wms.service.RecordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -47,6 +46,16 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     public List<Record> findRecordsByGoodsAndDate(Integer goodsId, String startTime, String endTime) {
         return Collections.emptyList();
     }//待开发
+
+    @Override
+    public List<RecordExc> getAllRecordsWithAssociations() {
+        return recordMapper.getAllRecordsWithAssociations();
+    }
+
+    @Override
+    public List<Record> getAllRecords() {
+        return recordMapper.selectAllRecords();
+    }
 
     @Override
     public boolean save(Record record) {

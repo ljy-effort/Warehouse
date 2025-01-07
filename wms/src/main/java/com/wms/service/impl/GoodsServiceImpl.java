@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,5 +95,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     @Override
     public boolean updateGoodsByCode(Goods goods) {
         return goodsMapper.updateGoodsByCode(goods);
+    }
+
+
+    @Override
+    public List<Map<String, Object>> getExportData() {
+        return goodsMapper.getAllGoodsForExport();
     }
 }

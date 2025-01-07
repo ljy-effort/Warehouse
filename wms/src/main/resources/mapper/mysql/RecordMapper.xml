@@ -34,5 +34,17 @@
         VALUES (#{goods}, #{userid}, #{adminId}, #{count}, #{amount}, #{createtime}, #{remark})
     </insert>
 
-
+    <select id="getAllRecordsWithAssociations" resultType="com.wms.entity.RecordExc">
+        SELECT r.id, g.goodscode, g.name AS goodsname, s.name AS storagename, gt.name AS goodstypename,
+               u.name AS adminname, r.count, r.amount, r.createtime, r.remark
+        FROM record r
+                 JOIN goods g ON r.goods = g.id
+                 JOIN storage s ON g.storage = s.id
+                 JOIN goodstype gt ON g.goodstype = gt.id
+                 JOIN user u ON r.admin_id = u.id
+    </select>
+    <!-- 定义查询所有记录的SQL语句 -->
+    <select id="selectAllRecords" resultType="com.wms.entity.Record">
+        SELECT * FROM record
+    </select>
 </mapper>

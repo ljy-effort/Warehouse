@@ -2,9 +2,9 @@ package com.wms.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.wms.entity.Goods;
 import com.wms.entity.Record;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wms.entity.RecordExc;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,4 +28,7 @@ public interface RecordService extends IService<Record> {
     List<Record> findRecordsByGoodsAndDate(Integer goodsId, String startTime, String endTime);
 
 
+    List<RecordExc> getAllRecordsWithAssociations();
+
+    List<Record> getAllRecords();
 }

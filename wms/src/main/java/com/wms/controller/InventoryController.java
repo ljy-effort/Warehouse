@@ -5,13 +5,12 @@ import com.wms.entity.*;
 import com.wms.service.InventoryService;
 import com.wms.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/inventory")
@@ -60,9 +59,11 @@ public class InventoryController {
     }
 
     @GetMapping("/searchs")
-    public Result searchRecord(@RequestParam(required = false) Integer goodsId,
-                               @RequestParam("startTime") String startTime,
-                               @RequestParam("endTime") String endTime) {
+    public ResponseEntity<?> searchRecord(@RequestParam(required = false) Integer goodsId,
+                                          @RequestParam("startTime") String startTime,
+                                          @RequestParam("endTime") String endTime,
+                                          @RequestParam(defaultValue = "1") Integer pageNum,
+                                          @RequestParam(defaultValue = "10") Integer pageSize) {
         try {
             List<Map<String, Object>> records;
             if (goodsId == null) {
@@ -76,16 +77,18 @@ public class InventoryController {
                 if (record.get("goods") == null || record.get("count") == null || record.get("amount") == null) {
                     continue;
                 }
+
                 Integer currentGoodsId = (Integer) record.get("goods");
                 Integer count = (Integer) record.get("count");
                 BigDecimal amount = (BigDecimal) record.get("amount");
 
                 // 查询物料编码和名称
+
                 String goodsCode = inventoryService.getGoodsCode(currentGoodsId);
                 String goodsName = inventoryService.getGoodsName(currentGoodsId);
                 int stockCount = inventoryService.getStockCount(currentGoodsId);
 
-                InventorySearchResult result = materialResults.getOrDefault(currentGoodsId, new InventorySearchResult(0, BigDecimal.ZERO, goodsCode, goodsName, stockCount));
+                InventorySearchResult result = materialResults.getOrDefault(currentGoodsId, new InventorySearchResult(currentGoodsId,0, BigDecimal.ZERO, goodsCode, goodsName, stockCount));
                 result.setTotalCount(result.getTotalCount() + count.intValue());
                 if (count >= 0) {
                     result.setTotalAmount(result.getTotalAmount().add(amount));
@@ -95,17 +98,20 @@ public class InventoryController {
                 materialResults.put(currentGoodsId, result);
             }
 
+            // 直接返回materialResults，不包装在Result对象中
             if (materialResults.isEmpty()) {
-                return Result.suc(new HashMap<>());
+                return new ResponseEntity<>(new HashMap<>(), HttpStatus.OK);
             }
 
             if (goodsId != null) {
-                return Result.suc(materialResults.getOrDefault(goodsId, new InventorySearchResult(0, BigDecimal.ZERO, "", "", 0)));
+                InventorySearchResult result = materialResults.getOrDefault(goodsId, new InventorySearchResult(goodsId,0, BigDecimal.ZERO, "", "", 0));
+                return new ResponseEntity<>(Collections.singletonList(result), HttpStatus.OK);
             } else {
-                return Result.suc(materialResults);
+                return new ResponseEntity<>(materialResults.values(), HttpStatus.OK);
             }
         } catch (Exception e) {
-            return Result.fail("查询失败： " + e.getMessage());
+            // 可以选择返回一个错误信息的Map，或者自定义的错误响应体
+            return new ResponseEntity<>("查询失败： " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping("/records")

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wms.common.ExcelExportUtil;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.Goods;
@@ -16,7 +17,10 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -87,5 +91,18 @@ public class GoodsController {
 
         IPage result = goodsService.pageCC(page,lambdaQueryWrapper);
         return Result.suc(result.getRecords(),result.getTotal());
+    }
+
+    @GetMapping("/exportExcel")
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        // 查询数据
+        List<Map<String, Object>> data = goodsService.getExportData();
+
+        // 定义表头和列名
+        String[] headers = {"物料编码", "货名", "仓库", "分类", "库存", "备注"};
+        String[] columns = {"goodscode", "name", "storageName", "typeName", "count", "remark"};
+
+        // 调用工具类导出Excel
+        ExcelExportUtil.exportExcel(response, "GoodsData", data, headers, columns);
     }
 }

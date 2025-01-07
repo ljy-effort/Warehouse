@@ -1,31 +1,28 @@
 package com.wms.controller;
 
 
-import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wms.common.ExcelExportUtil;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
-import com.wms.entity.Goods;
-import com.wms.entity.Record;
-import com.wms.entity.RecordDTO;
+import com.wms.entity.*;
 import com.wms.service.GoodsService;
 import com.wms.service.RecordService;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -164,5 +161,38 @@ public class RecordController {
         } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
+    }
+    //导出记录表到excel
+    @PostMapping("/exportExcel")
+    public void exportExcel(HttpServletResponse response) throws IOException{
+       // try {
+        List<RecordExc> records = recordService.getAllRecordsWithAssociations();
+
+
+        // 将记录转换为Map列表
+        List<Map<String, Object>> data = records.stream().map(record -> {
+            Map<String, Object> row = new HashMap<>();
+            row.put("ID", record.getId());
+            row.put("物料编码", record.getGoodscode());
+            row.put("物料名称", record.getGoodsname());
+            row.put("仓库", record.getStoragename());
+            row.put("分类", record.getGoodstypename());
+            row.put("操作人", record.getAdminname());
+            row.put("数量", record.getCount());
+            row.put("金额", record.getAmount().doubleValue()); // 假设金额是BigDecimal类型
+            row.put("操作时间", record.getCreatetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            row.put("备注", record.getRemark());
+            return row;
+        }).collect(Collectors.toList());
+
+
+        // 定义表头和列名
+        String[] headers = {"ID", "物料编码", "物料名称", "仓库", "分类", "操作人", "数量", "金额", "操作时间", "备注"};
+        String[] columns = {"ID", "物料编码", "物料名称", "仓库", "分类", "操作人", "数量", "金额", "操作时间", "备注"};
+//            String[] columns = {"id", "goodscode", "goodsname", "storagename", "goodstypename", "adminname", "count", "amount", "createtime", "remark"};
+
+            // 调用工具类导出Excel
+            ExcelExportUtil.exportExcel(response, "Records", data, headers, columns);
+
     }
 }

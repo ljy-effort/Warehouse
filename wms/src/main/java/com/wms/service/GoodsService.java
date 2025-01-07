@@ -10,6 +10,7 @@ import com.wms.entity.Storage;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,4 +34,6 @@ public interface GoodsService extends IService<Goods> {
     boolean updateGoods(Goods goods);
 
     boolean updateGoodsByCode(Goods goods);
+
+    List<Map<String, Object>> getExportData();
 }

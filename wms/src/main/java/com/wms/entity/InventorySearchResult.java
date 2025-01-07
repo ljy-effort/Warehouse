@@ -9,6 +9,7 @@ import java.util.Map;
 
 @TableName("inventorySearchResult")
     public class InventorySearchResult {
+        private Integer goodsId;
         private int totalCount;
         private BigDecimal totalAmount;
         private String goodsCode; // 物料编码
@@ -21,6 +22,14 @@ import java.util.Map;
 
     public void setGoodsCode(String goodsCode) {
         this.goodsCode = goodsCode;
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getGoodsName() {
@@ -36,6 +45,15 @@ import java.util.Map;
     }
 
     public void setStockCount(int stockCount) {
+        this.stockCount = stockCount;
+    }
+
+    public InventorySearchResult(Integer goodsId, int totalCount, BigDecimal totalAmount, String goodsCode, String goodsName, int stockCount) {
+        this.goodsId = goodsId;
+        this.totalCount = totalCount;
+        this.totalAmount = totalAmount;
+        this.goodsCode = goodsCode;
+        this.goodsName = goodsName;
         this.stockCount = stockCount;
     }
 
