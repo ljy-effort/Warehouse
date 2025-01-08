@@ -19,4 +19,5 @@ public interface InventoryService extends IService<InventorySearchResult> {
     int getStockCount(Integer goodsId);
 
     List<RecordDetail> findRecordsByGoodsAndDateWithDetails(Integer goodsId, String startTime, String endTime);
+
 }

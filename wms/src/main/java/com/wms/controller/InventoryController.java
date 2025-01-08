@@ -68,13 +68,12 @@ public class InventoryController {
             return Result.fail("获取所有物料失败：" + e.getMessage());
         }
     }
-
+    //之前的旧版接口，未实现分页
     @GetMapping("/searchs")
     public ResponseEntity<?> searchRecord(@RequestParam(required = false) Integer goodsId,
                                           @RequestParam("startTime") String startTime,
-                                          @RequestParam("endTime") String endTime,
-                                          @RequestParam(defaultValue = "1") Integer pageNum,
-                                          @RequestParam(defaultValue = "10") Integer pageSize) {
+                                          @RequestParam("endTime") String endTime
+                                          ) {
         try {
             List<Map<String, Object>> records;
             if (goodsId == null) {
@@ -149,12 +148,12 @@ public class InventoryController {
         String[] headers = {"ID", "物料编码", "物料名称", "现库存", "总数量", "总金额"};
         String[] columns = {"goodsId", "goodsCode", "goodsName", "stockCount", "totalCount", "totalAmount"};
 
-        // 简化时间格式为YYYYMMDD
-        String startDateFormat = startTime.split(" ")[0].replace("-", "");
-        String endDateFormat = endTime.split(" ")[0].replace("-", "");
-
-        // 生成工作表名称
-        String fileName = "Inventory_" + startDateFormat + "_" + endDateFormat;
+//        // 简化时间格式为YYYYMMDD
+//        String startDateFormat = startTime.split(" ")[0].replace("-", "");
+//        String endDateFormat = endTime.split(" ")[0].replace("-", "");
+//
+//        // 生成工作表名称
+//        String fileName = "Inventory_" + startDateFormat + "_" + endDateFormat;
 
         // 将结果转换为Map列表
         List<Map<String, Object>> data = inventorySearchResults.stream().map(result -> {
@@ -169,7 +168,7 @@ public class InventoryController {
         }).collect(Collectors.toList());
 
         // 调用工具类导出Excel
-        ExcelExportUtil.exportExcel(response, fileName, data, headers, columns);
+        ExcelExportUtil.exportExcel(response, "fileName", data, headers, columns);
     }
     //导出某个物料某个时间段的出入库记录表
     @GetMapping("/exportMaterialRecords")
@@ -197,13 +196,13 @@ public class InventoryController {
             return row;
         }).collect(Collectors.toList());
 
-        // 生成文件名
-        String startDateFormat = startTime.split(" ")[0].replace("-", "");
-        String endDateFormat = endTime.split(" ")[0].replace("-", "");
-        String fileName = "MaterialRecords_" + startDateFormat + "_" + endDateFormat;
+//        // 生成文件名 前端完成
+//        String startDateFormat = startTime.split(" ")[0].replace("-", "");
+//        String endDateFormat = endTime.split(" ")[0].replace("-", "");
+//        String fileName = "MaterialRecords_" + startDateFormat + "_" + endDateFormat;
 
         // 调用工具类导出Excel
-        ExcelExportUtil.exportExcel(response, fileName, data, headers, columns);
+        ExcelExportUtil.exportExcel(response, "fileName", data, headers, columns);
     }
     @GetMapping("/records")
     public Result getRecordsByGoodsIdWithDetails(
@@ -215,6 +214,96 @@ public class InventoryController {
             return Result.suc(records);
         } catch (Exception e) {
             return Result.fail("查询记录失败：" + e.getMessage());
+        }
+    }
+
+    // 新增分页接口
+    @GetMapping("/searchspaginated")
+    public ResponseEntity<?> searchRecordPaginated(@RequestParam("startTime") String startTime,
+                                                   @RequestParam("endTime") String endTime,
+                                                   @RequestParam(defaultValue = "1") Integer pageNum,
+                                                   @RequestParam(defaultValue = "10") Integer pageSize) {
+        try {
+            // 获取所有记录
+            List<Map<String, Object>> records = inventoryService.findRecordsForAllMaterials(startTime, endTime);
+
+            // 进行聚合计算
+            Map<Integer, InventorySearchResult> materialResults = new HashMap<>();
+            for (Map<String, Object> record : records) {
+                Integer goodsId = (Integer) record.get("goods");
+                Integer count = (Integer) record.get("count");
+                BigDecimal amount = (BigDecimal) record.get("amount");
+
+                String goodsCode = inventoryService.getGoodsCode(goodsId);
+                String goodsName = inventoryService.getGoodsName(goodsId);
+                int stockCount = inventoryService.getStockCount(goodsId);
+
+                InventorySearchResult result = materialResults.getOrDefault(goodsId, new InventorySearchResult(goodsId, 0, BigDecimal.ZERO, goodsCode, goodsName, stockCount));
+                result.setTotalCount(result.getTotalCount() + count.intValue());
+                if (count >= 0) {
+                    result.setTotalAmount(result.getTotalAmount().add(amount));
+                } else {
+                    result.setTotalAmount(result.getTotalAmount().subtract(amount));
+                }
+                materialResults.put(goodsId, result);
+            }
+
+            // 将计算结果添加到共享的数据结构中
+            inventorySearchResults.clear(); // 清空之前的计算结果
+            inventorySearchResults.addAll(materialResults.values());
+
+            // 获取所有聚合结果
+            List<InventorySearchResult> allResults = new ArrayList<>(materialResults.values());
+
+            // 计算总记录数
+            int total = allResults.size();
+
+            // 计算分页的起始索引和结束索引
+            int start = (pageNum - 1) * pageSize;
+            int end = Math.min(start + pageSize, total);
+
+            // 截取分页数据
+            List<InventorySearchResult> pageResults = allResults.subList(start, end);
+
+            // 返回结果
+            Map<String, Object> result = new HashMap<>();
+            result.put("total", total);
+            result.put("data", pageResults);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("查询失败： " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    // 新增物料详细记录的分页接口
+    @GetMapping("/recordspaginated")
+    public ResponseEntity<?> getPaginatedRecords(@RequestParam("goodsId") Integer goodsId,
+                                                 @RequestParam("startTime") String startTime,
+                                                 @RequestParam("endTime") String endTime,
+                                                 @RequestParam(defaultValue = "1") Integer pageNum,
+                                                 @RequestParam(defaultValue = "10") Integer pageSize) {
+        try {
+            // 获取所有记录
+            List<RecordDetail> records = inventoryService.findRecordsByGoodsAndDateWithDetails(goodsId, startTime, endTime);
+
+            // 计算总记录数
+            int total = records.size();
+
+            // 计算分页的起始索引和结束索引
+            int start = (pageNum - 1) * pageSize;
+            int end = Math.min(start + pageSize, total);
+
+            // 截取分页数据
+            List<RecordDetail> pageRecords = records.subList(start, end);
+
+            // 返回结果
+            Map<String, Object> result = new HashMap<>();
+            result.put("total", total);
+            result.put("data", pageRecords);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("查询失败： " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -8,6 +8,9 @@ import com.wms.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,23 +38,24 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     public List<Map<String, Object>> findRecordsWithGoodsInfo(String startTime, String endTime) {
         return inventoryMapper.findRecordsWithGoodsInfo(startTime, endTime);
     }
-
+    @Override
     public String getGoodsCode(Integer goodsId) {
         Map<String, Object> goodsInfo = inventoryMapper.getGoodsInfo(goodsId);
         return (String) goodsInfo.get("goodscode");
     }
-
+    @Override
     public String getGoodsName(Integer goodsId) {
         Map<String, Object> goodsInfo = inventoryMapper.getGoodsInfo(goodsId);
         return (String) goodsInfo.get("name");
     }
-
+    @Override
     public int getStockCount(Integer goodsId) {
         Map<String, Object> goodsInfo = inventoryMapper.getGoodsInfo(goodsId);
         return (Integer) goodsInfo.get("count");
     }
-
+    @Override
     public List<RecordDetail> findRecordsByGoodsAndDateWithDetails(Integer goodsId, String startTime, String endTime){
         return inventoryMapper.findRecordsByGoodsAndDateWithDetails(goodsId, startTime, endTime);
     }
+
 }
